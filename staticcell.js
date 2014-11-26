@@ -33,13 +33,10 @@ $(document).ready(function () {
     IPython.tooltip = new IPython.Tooltip()
 
     var kernel = new IPython.Kernel('/kernels');
-console.log(kernel);
 
     //var ws_url = 'ws' + document.location.origin.substring(4);
 
 	var ws_url = "ws://192.168.59.103:8000";
-
-console.log(ws_url);
 
     kernel._kernel_started({kernel_id: '1', ws_url: ws_url});
     var thecell = new IPython.CodeCell(kernel);
