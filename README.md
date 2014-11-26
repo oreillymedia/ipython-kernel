@@ -20,9 +20,9 @@ Eventually, though, this kernel should be started by fig or something like Deis.
 
 ## To Do
 
-* Remove the static app stuff from the repo entirely to just leave the kernel stuff
-* Make a docker image that can auto-resart
-* Host on something like Deis?  
-* Explore how to get other kernels going
-* How to add other Kernels (especially something like Go or Julia), or switch kernels?  
+* [x] Remove the static app stuff from the repo entirely to just leave the kernel stuff
+* [x] Make a docker image that can autostart
+* [ ] Host on something like Deis or tmpnb 
+* [ ] Explore how to get other kernels going
+* [ ] How to add other Kernels (especially something like Go or Julia), or switch kernels?  
 
