@@ -40,7 +40,6 @@ ioloop.install()
 from tornado import httpserver
 from tornado import web
 
-
 try:
     from tornado.log import app_log
 except ImportError:
@@ -68,8 +67,8 @@ from IPython.html.services.kernels.handlers import (
 _kernel_id_regex = r"(?P<kernel_id>\w+)"
 
 
-
 class WebApp(web.Application):
+	
 
     def __init__(self, kernel_manager):
         handlers = [
@@ -104,9 +103,22 @@ class WebApp(web.Application):
 # start the app
 #-----------------------------------------------------------------------------
 
-def main():
 
-    app_log.info("Starting...")
+# 
+# Need to override the cross-origin restrictions
+# ALL HAIL THE MONKEY PATCH
+# http://stackoverflow.com/questions/5626193/what-is-monkey-patch
+
+def check_origin(self, origin):
+    return True
+
+KernelHandler.check_origin = check_origin
+KernelActionHandler.check_orign = check_origin
+IOPubHandler.check_origin = check_origin
+ShellHandler.check_origin = check_origin
+StdinHandler.check_origin = check_origin
+
+def main():
 
     kernel_manager = MultiKernelManager()
     
