@@ -15,5 +15,3 @@ ENV SHELL /bin/bash
 ENV USER pyxie
 
 WORKDIR /home/pyxie
-
-CMD python jupyter-kernel.py
