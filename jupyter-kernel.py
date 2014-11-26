@@ -134,7 +134,7 @@ def main():
     app = WebApp(kernel_manager)
 
     server = httpserver.HTTPServer(app)
-    server.listen(8888, '127.0.0.1')
+    server.listen(8888, '0.0.0.0')
 
     try:
         ioloop.IOLoop.instance().start()
