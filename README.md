@@ -13,7 +13,7 @@ docker build -t odewahn/jupyter-kernel
 To start the container manually: 
 
 ```
-docker run -p 8888:8888 odewahn/jupyter-kernel
+docker run -d -p 8888 odewahn/jupyter-kernel
 ```
 
 Eventually, though, this kernel should be started by fig or something like Deis.
