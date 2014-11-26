@@ -12,6 +12,11 @@ Authors:
 #  the file COPYING, distributed as part of this software.
 #-----------------------------------------------------------------------------
 
+#
+# Hacked up version of 
+#   https://github.com/minrk/singlecell
+#
+
 #-----------------------------------------------------------------------------
 # Imports
 #-----------------------------------------------------------------------------
@@ -104,10 +109,8 @@ class WebApp(web.Application):
 #-----------------------------------------------------------------------------
 
 
-# 
 # Need to override the cross-origin restrictions
 # ALL HAIL THE MONKEY PATCH
-# http://stackoverflow.com/questions/5626193/what-is-monkey-patch
 
 def check_origin(self, origin):
     return True
@@ -130,10 +133,9 @@ def main():
     logging.basicConfig(level=logging.INFO)
     app = WebApp(kernel_manager)
 
-
     server = httpserver.HTTPServer(app)
-    server.listen(8000, '0.0.0.0')
-    app_log.info("Serving at http://0.0.0.0:8000")
+    server.listen(8888, '0.0.0.0')
+    print ("Serving at http://0.0.0.0:8888")
     try:
         ioloop.IOLoop.instance().start()
     except KeyboardInterrupt:
