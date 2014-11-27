@@ -71,12 +71,16 @@ from IPython.html.services.kernels.handlers import (
 
 _kernel_id_regex = r"(?P<kernel_id>\w+)"
 
+class IndexHandler(web.RequestHandler):
+    def get(self):
+        self.write("Hello world")
 
 class WebApp(web.Application):
 	
 
     def __init__(self, kernel_manager):
         handlers = [
+            (r"/", IndexHandler),
             (r"/kernels/%s" % _kernel_id_regex, KernelHandler),
             (r"/kernels/%s/%s" % (_kernel_id_regex, _kernel_action_regex), KernelActionHandler),
             (r"/kernels/%s/iopub" % _kernel_id_regex, IOPubHandler),
