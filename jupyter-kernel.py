@@ -82,6 +82,8 @@ class IndexHandler(web.RequestHandler):
 class WebApp(web.Application):
 
     def __init__(self, kernel_manager, base_path):
+
+        app_log.info("Routing on {}".format(base_path))
         handlers = [
             (url_path_join(base_path, r"/"), IndexHandler),
             (url_path_join(base_path, r"/kernels/%s" % _kernel_id_regex), KernelHandler),
@@ -90,6 +92,8 @@ class WebApp(web.Application):
             (url_path_join(base_path, r"/kernels/%s/shell" % _kernel_id_regex), ShellHandler),
             (url_path_join(base_path, r"/kernels/%s/stdin" % _kernel_id_regex), StdinHandler),
         ]
+
+        app_log.info("{}".format(handlers))
 
         # Python < 2.6.5 doesn't accept unicode keys in f(**kwargs), and
         # base_project_url will always be unicode, which will in turn
