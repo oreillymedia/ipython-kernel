@@ -8,7 +8,7 @@ RUN pip install python-gflags
 RUN pip install pyzmq
 RUN pip install tornado
 #RUN pip install wsgiref
-RUN pip install ipython==1.1.0
+RUN pip install ipython==1.1
 
 
 # Create a pyxie user

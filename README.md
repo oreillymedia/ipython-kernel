@@ -7,16 +7,22 @@ Simple base image for a static Jupyter notebook server.
 To build the image:
 
 ```
-docker build -t odewahn/jupyter-kernel
+docker build -t odewahn/jupyter-kernel .
 ```
 
 To start the container manually: 
 
 ```
-docker run -d -p 8888 odewahn/jupyter-kernel
+docker run -d -p 8888:8888 odewahn/jupyter-kernel
 ```
 
-Eventually, though, this kernel should be started by fig or something like Deis.
+Eventually, though, this kernel should be started by fig or something like Deis or tmpnb.
+
+Note that if you leave the second 8888 off in the port assignment, docker will assign one for you.
+
+## Kernel issues
+
+Note that right now we can only run the 1.2 kernel this way -- the new IPython kernel is set up differently and requires some new setup.
 
 ## To Do
 

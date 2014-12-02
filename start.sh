@@ -13,6 +13,10 @@ docker run -d -p 9000:9000 -v /var/run/docker.sock:/docker.sock crosbymichael/do
 
 
 export TOKEN=$( head -c 30 /dev/urandom | xxd -p )
+
+export TOKEN=48a36627afb087654f7e8de31f9a0780a23bc416b0b9c9d3412abd53a1ab
+
+
 docker run --net=host -e CONFIGPROXY_AUTH_TOKEN=$TOKEN --name=proxy jupyter/configurable-http-proxy --default-target http://192.168.59.103:9999
 
 docker run --net=host  \
