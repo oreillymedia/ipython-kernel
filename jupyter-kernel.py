@@ -28,6 +28,7 @@ import os
 from distutils.version import LooseVersion
 
 import IPython
+from IPython.html.utils import url_path_join
 
 try:
     if LooseVersion(IPython.__version__) < LooseVersion('1.0'):
@@ -76,16 +77,15 @@ class IndexHandler(web.RequestHandler):
         self.write("Hello world")
 
 class WebApp(web.Application):
-	
 
-    def __init__(self, kernel_manager):
+    def __init__(self, kernel_manager, base_path):
         handlers = [
-            (r"/", IndexHandler),
-            (r"/kernels/%s" % _kernel_id_regex, KernelHandler),
-            (r"/kernels/%s/%s" % (_kernel_id_regex, _kernel_action_regex), KernelActionHandler),
-            (r"/kernels/%s/iopub" % _kernel_id_regex, IOPubHandler),
-            (r"/kernels/%s/shell" % _kernel_id_regex, ShellHandler),
-            (r"/kernels/%s/stdin" % _kernel_id_regex, StdinHandler),
+            (url_path_join(base_path, r"/"), IndexHandler),
+            (url_path_join(base_path, r"/kernels/%s" % _kernel_id_regex), KernelHandler),
+            (url_path_join(base_path, r"/kernels/%s/%s" % (_kernel_id_regex, _kernel_action_regex)), KernelActionHandler),
+            (url_path_join(base_path, r"/kernels/%s/iopub" % _kernel_id_regex), IOPubHandler),
+            (url_path_join(base_path, r"/kernels/%s/shell" % _kernel_id_regex), ShellHandler),
+            (url_path_join(base_path, r"/kernels/%s/stdin" % _kernel_id_regex), StdinHandler),
         ]
 
         # Python < 2.6.5 doesn't accept unicode keys in f(**kwargs), and
@@ -103,6 +103,8 @@ class WebApp(web.Application):
             cookie_secret='secret',
             cookie_name='ignored',
             kernel_manager=kernel_manager,
+            base_path=base_path,
+            static_url_prefix=url_path_join(base_path, '/static/'),
         )
 
         super(WebApp, self).__init__(handlers, **settings)
@@ -127,6 +129,12 @@ StdinHandler.check_origin = check_origin
 
 def main():
 
+    tornado.options.define('base_url', default='/',
+            help="Base URL for the server (e.g. /singlecell)"
+    )
+    tornado.options.parse_command_line()
+    opts = tornado.options.options
+
     kernel_manager = MultiKernelManager()
     
 	
@@ -135,7 +143,7 @@ def main():
     kernel_manager.start_kernel(kernel_id=kernel_id)
     
     logging.basicConfig(level=logging.INFO)
-    app = WebApp(kernel_manager)
+    app = WebApp(kernel_manager, opts.base_url)
 
     server = httpserver.HTTPServer(app)
     server.listen(8888, '0.0.0.0')
