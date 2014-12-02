@@ -1,4 +1,15 @@
-from ipython/scipystack
+from python:latest
+
+RUN pip install Jinja2
+RUN pip install httplib2
+RUN pip install matplotlib
+RUN pip install python-dateutil
+RUN pip install python-gflags
+RUN pip install pyzmq
+RUN pip install tornado
+#RUN pip install wsgiref
+RUN pip install ipython==1.1.0
+
 
 # Create a pyxie user
 
