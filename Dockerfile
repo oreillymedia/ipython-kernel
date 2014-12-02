@@ -14,4 +14,6 @@ ENV HOME /home/pyxie
 ENV SHELL /bin/bash
 ENV USER pyxie
 
+EXPOSE 8888
+
 WORKDIR /home/pyxie
