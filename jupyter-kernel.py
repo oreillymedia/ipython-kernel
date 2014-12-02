@@ -129,8 +129,8 @@ StdinHandler.check_origin = check_origin
 
 def main():
 
-    tornado.options.define('base_url', default='/',
-            help="Base URL for the server (e.g. /singlecell)"
+    tornado.options.define('base_path', default='/',
+            help="Base path for the server (e.g. /singlecell)"
     )
     tornado.options.parse_command_line()
     opts = tornado.options.options
@@ -143,7 +143,7 @@ def main():
     kernel_manager.start_kernel(kernel_id=kernel_id)
     
     logging.basicConfig(level=logging.INFO)
-    app = WebApp(kernel_manager, opts.base_url)
+    app = WebApp(kernel_manager, opts.base_path)
 
     server = httpserver.HTTPServer(app)
     server.listen(8888, '0.0.0.0')
