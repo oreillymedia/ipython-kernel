@@ -83,6 +83,11 @@ class WebApp(web.Application):
 
     def __init__(self, kernel_manager, base_path):
 
+        if not base_path.startswith('/'):
+            base_path = '/' + base_path
+        if not base_path.endswith('/'):
+            base_path = base_path + '/'
+
         app_log.info("Routing on {}".format(base_path))
         handlers = [
             (url_path_join(base_path, r"/"), IndexHandler),
