@@ -43,6 +43,9 @@ except TypeError:
 from zmq.eventloop import ioloop
 ioloop.install()
 
+import tornado
+import tornado.options
+
 from tornado import httpserver
 from tornado import web
 
