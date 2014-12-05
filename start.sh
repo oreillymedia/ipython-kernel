@@ -6,31 +6,50 @@
 # container for a user
 # 
 
-#
-# Start the docker_ui so I can see what's happening
-#
-docker run -d -p 9000:9000 -v /var/run/docker.sock:/docker.sock crosbymichael/dockerui -e /docker.sock
+
+# Set the default redirect URL
+# Note that if you're on boot2docker, I assume you're on a dev env
+export REDIRECT_URL=http://127.0.0.1:9999
+export CONTAINER_IP=0.0.0.0
+if boot2docker > /dev/null 2>&1; then
+	export REDIRECT_URL=192.168.59.103:9999
+	export CONTAINER_IP=192.168.59.103
+fi
 
 
+
+# 
+# Set the token
+#
 export TOKEN=$( head -c 30 /dev/urandom | xxd -p )
 
-export TOKEN=48a36627afb087654f7e8de31f9a0780a23bc416b0b9c9d3412abd53a1ab
 
+#
+# Kill all the docker containers
+#
+docker kill $(docker ps -aq)
+docker rm proxy
+docker rm tmpnb
 
-docker run --net=host -e CONFIGPROXY_AUTH_TOKEN=$TOKEN --name=proxy jupyter/configurable-http-proxy --default-target http://192.168.59.103:9999
+#
+# Start the proxy server
+#
 
+docker run -d --net=host -e CONFIGPROXY_AUTH_TOKEN=$TOKEN --name=proxy \
+                  jupyter/configurable-http-proxy --default-target $REDIRECT_URL
 
-
-
-docker run --net=host -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
+#
+# Start the tmpnb server
+#
+docker run -d --net=host --name=tmpnb -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
    -v /var/run/docker.sock:/docker.sock \
    jupyter/tmpnb \
-   python orchestrate.py --container_ip=0.0.0.0 --image="odewahn/jupyter-kernel-test2" \
+   python orchestrate.py --container_ip=$CONTAINER_IP --image="odewahn/jupyter-kernel" \
    --command="python jupyter-kernel.py --base_path='{base_path}'" --pool_size=5 --redirect-uri="/"
 
-
-
-echo "Hit ctrl+c to exit..."
-while true; do
-  : # busy-wait
-done
+#
+# Print some status messages
+#
+echo "TOKEN: $TOKEN"
+echo "CONTAINER_IP: $CONTAINER_IP"
+echo "REDIRECT_URL set to $REDIRECT_URL"
