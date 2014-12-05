@@ -7,20 +7,10 @@
 # 
 
 
-# Set the default redirect URL
-# Note that if you're on boot2docker, I assume you're on a dev env
+# Set key environment variables
+
 export REDIRECT_URL=http://127.0.0.1:9999
 export CONTAINER_IP=0.0.0.0
-if boot2docker > /dev/null 2>&1; then
-	export REDIRECT_URL=192.168.59.103:9999
-	export CONTAINER_IP=192.168.59.103
-fi
-
-
-
-# 
-# Set the token
-#
 export TOKEN=$( head -c 30 /dev/urandom | xxd -p )
 
 
@@ -50,6 +40,7 @@ docker run -d --net=host --name=tmpnb -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
 #
 # Print some status messages
 #
+echo "\n"
 echo "TOKEN: $TOKEN"
 echo "CONTAINER_IP: $CONTAINER_IP"
 echo "REDIRECT_URL set to $REDIRECT_URL"
