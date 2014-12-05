@@ -38,6 +38,12 @@ docker run -d --net=host --name=tmpnb -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
    --command="python jupyter-kernel.py --base_path='{base_path}'" --pool_size=5 --redirect-uri="/"
 
 #
+# For testing, also start a single instance running directly on 8888
+#
+docker run -p 8888:8888 odewahn/jupyter-kernel ./go.sh
+
+
+#
 # Print some status messages
 #
 echo "\n"
