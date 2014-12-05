@@ -40,7 +40,7 @@ docker run -d --net=host --name=tmpnb -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
 #
 # For testing, also start a single instance running directly on 8888
 #
-docker run -p 8888:8888 odewahn/jupyter-kernel ./go.sh
+docker run -d -p 8888:8888 odewahn/jupyter-kernel ./go.sh
 
 
 #
