@@ -30,6 +30,7 @@ from distutils.version import LooseVersion
 import IPython
 from IPython.html.utils import url_path_join
 
+
 try:
     if LooseVersion(IPython.__version__) < LooseVersion('1.0'):
         raise ImportError("singlecell demo requires IPython ≥ 1.0, found %s" % IPython.__version__)
@@ -48,6 +49,7 @@ import tornado.options
 
 from tornado import httpserver
 from tornado import web
+from tornado.escape import json_encode
 
 try:
     from tornado.log import app_log
@@ -77,7 +79,8 @@ _kernel_id_regex = r"(?P<kernel_id>\w+)"
 
 class IndexHandler(web.RequestHandler):
     def get(self):
-        self.write("Hello world")
+	    self.set_header("Content-Type", "text/plain")
+	    self.write(json_encode({'status': 'ok'}))
 
 class WebApp(web.Application):
 
