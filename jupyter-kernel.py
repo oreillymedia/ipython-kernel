@@ -77,10 +77,16 @@ from IPython.html.services.kernels.handlers import (
 
 _kernel_id_regex = r"(?P<kernel_id>\w+)"
 
+
+class BaseHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.add_header("access-control-allow-origin", "*")
+
 class IndexHandler(web.RequestHandler):
     def get(self):
-	    self.set_header("Content-Type", "text/plain")
-	    self.write(json_encode({'status': 'ok'}))
+        self.add_header("Content-Type", "text/plain")
+        self.write(json_encode({'status': 'ok'}))
+        self.add_header("access-control-allow-origin", "*")
 
 class WebApp(web.Application):
 
@@ -121,6 +127,7 @@ class WebApp(web.Application):
             base_path=base_path,
             static_url_prefix=url_path_join(base_path, '/static/'),
         )
+
 
         super(WebApp, self).__init__(handlers, **settings)
 
