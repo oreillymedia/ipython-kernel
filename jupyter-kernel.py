@@ -80,13 +80,17 @@ _kernel_id_regex = r"(?P<kernel_id>\w+)"
 
 class BaseHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
-        self.add_header("access-control-allow-origin", "*")
+        self.add_header("Access-Control-Allow-Origin", "*")
 
 class IndexHandler(web.RequestHandler):
+
+    def initialize(self, base_path):
+        self.base_path = base_path
+
     def get(self):
         self.add_header("Content-Type", "text/plain")
-        self.write(json_encode({'status': 'ok'}))
-        self.add_header("access-control-allow-origin", "*")
+        self.write(json_encode({'status': 'ok', 'url': self.base_path}))
+        self.add_header("Access-Control-Allow-Origin", "*")
 
 class WebApp(web.Application):
 
@@ -99,7 +103,7 @@ class WebApp(web.Application):
 
         app_log.info("Routing on {}".format(base_path))
         handlers = [
-            (url_path_join(base_path, r"/"), IndexHandler),
+            (url_path_join(base_path, r"/"), IndexHandler, {"base_path": base_path}),
             (url_path_join(base_path, r"/kernels/%s" % _kernel_id_regex), KernelHandler),
             (url_path_join(base_path, r"/kernels/%s/%s" % (_kernel_id_regex, _kernel_action_regex)), KernelActionHandler),
             (url_path_join(base_path, r"/kernels/%s/iopub" % _kernel_id_regex), IOPubHandler),
