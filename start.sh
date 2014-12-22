@@ -34,8 +34,8 @@ docker run -d --net=host -e CONFIGPROXY_AUTH_TOKEN=$TOKEN --name=proxy \
 docker run -d --net=host --name=tmpnb -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
    -v /var/run/docker.sock:/docker.sock \
    odewahn/tmpnb \
-   python orchestrate.py --container_ip=$CONTAINER_IP --image="odewahn/jupyter-kernel" \
-   --command="python jupyter-kernel.py --base_path='{base_path}'" --pool_size=50 --redirect-uri="/"
+   python orchestrate.py --container_ip=$CONTAINER_IP --image="odewahn/ruby-kernel-test" \
+   --command="python jupyter-kernel.py --base_path='{base_path}'" --pool_size=120 --redirect-uri="/"
 
 #
 # For testing, also start a single instance running directly on 8888

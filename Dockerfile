@@ -1,4 +1,16 @@
-from python:latest
+from ubuntu:latest
+
+RUN apt-get update
+RUN apt-get install -y ruby1.9.3
+RUN apt-get install -y python-software-properties python-dev python-pip
+RUN apt-get install -y libfreetype6-dev 
+RUN apt-get install -y libxft-dev
+RUN apt-get install -y libpng-dev
+RUN apt-get install -y libncurses5-dev
+RUN apt-get install -y vim 
+RUN apt-get install -y git-core 
+RUN apt-get install -y build-essential 
+RUN apt-get install -y curl unzip wget
 
 RUN pip install Jinja2
 RUN pip install httplib2
