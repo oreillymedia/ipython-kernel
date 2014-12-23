@@ -24,9 +24,16 @@ RUN pip install python-gflags
 RUN pip install pyzmq
 RUN pip install tornado
 RUN pip install ipython==1.1
-RUN pip install moviepy
 RUN pip install mayavi
 RUN pip install numpy
+
+#
+# Install movielib from source
+#
+WORKDIR /tmp
+RUN git clone https://github.com/Zulko/moviepy.git
+WORKDIR /tmp/moviepy
+RUN pip install .
 
 # Create a pyxie user
 
@@ -35,6 +42,10 @@ RUN mkdir -p /home/pyxie
 
 # Add the source code to the image
 ADD . /home/pyxie 
+
+# Installs the required library
+RUN python /home/pyxie/t.py
+
 RUN chown -R pyxie:pyxie /home/pyxie
 
 #USER pyxie
