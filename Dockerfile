@@ -13,18 +13,8 @@ RUN apt-get install -y build-essential
 RUN apt-get install -y curl unzip wget
 RUN apt-get install -y python-scipy 
 RUN apt-get install -y python-sklearn
-
-
-# MoviePy requires the ffmpeg binary. Ubuntu PPA doesn't work at the
-# moment, so install directly from official static binary release.
-ADD http://johnvansickle.com/ffmpeg/releases/ffmpeg-2.5.1-64bit-static.tar.xz /f.tar.xz
-RUN cd / && tar xvfJ f.tar.xz
-RUN ls -l /ffmpeg*
-RUN ln -s /ffmpeg-*/ffmpeg /usr/bin/
-RUN ln -s /ffmpeg-*/ffprobe /usr/bin/
-# Verify that ffmpeg works.
-RUN /usr/bin/ffmpeg || true
-
+RUN apt-get install -y imagemagick 
+RUN apt-get install -y python-vtk
 
 RUN pip install Jinja2
 RUN pip install httplib2
@@ -33,9 +23,10 @@ RUN pip install python-dateutil
 RUN pip install python-gflags
 RUN pip install pyzmq
 RUN pip install tornado
-#RUN pip install wsgiref
 RUN pip install ipython==1.1
 RUN pip install moviepy
+RUN pip install mayavi
+RUN pip install numpy
 
 # Create a pyxie user
 
@@ -46,10 +37,11 @@ RUN mkdir -p /home/pyxie
 ADD . /home/pyxie 
 RUN chown -R pyxie:pyxie /home/pyxie
 
-USER pyxie
-ENV HOME /home/pyxie
-ENV SHELL /bin/bash
-ENV USER pyxie
+#USER pyxie
+#ENV HOME /home/pyxie
+#ENV SHELL /bin/bash
+#ENV USER pyxie
+
 
 EXPOSE 8888
 
